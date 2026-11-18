@@ -13,10 +13,10 @@
 clear; clc;
 
 %% Input Parameters
-run_layer_optimization = false;
+run_layer_optimization = true;
 % Domain size and discretization
 domainLength  = 1.0;                  % meters
-numGridPoints = 1500;
+numGridPoints = 20000;
 x  = linspace(0, domainLength, numGridPoints);
 
 % Material properties for each layer
@@ -123,4 +123,19 @@ frequencies = 300e6:2e6:600e6;
 [Gam, T] = sweep_frequencies(frequencies, x, eps_r, mu_r, sigma_e, sigma_m, ...
                              eps0, mu0, 'o', 'o');
 plot_results(frequencies, Gam, T);
+
+%% Plot phase and magnitude of E_tot for this structure
+[E_total, E_scattered] = calculate_fields(f0, x, eps_r, mu_r, sigma_e, sigma_m, ...
+                                       eps0, mu0, 'o', 'o');
+figure;
+plot(x, abs(E_scattered), 'LineWidth', 1.5);
+xlabel('Position (m)'); ylabel('|E_{tot}|');
+title('Scattered Electric Field Magnitude at 500 MHz');
+grid on;
+
+figure;
+plot(x, angle(E_scattered), 'LineWidth', 1.5);
+xlabel('Position (m)'); ylabel('phase(E_{tot})');
+title('Scattered Electric Field Phase at 500 MHz');
+grid on;
 end
