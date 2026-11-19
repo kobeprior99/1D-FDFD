@@ -88,7 +88,7 @@ opts = optimoptions('lsqnonlin', 'Display', 'off', ...
 %p(1:5)     relative permittivity, layers 1-5
 %p(6:10)    electric conductivity (S/m), layers 1-5
 %p(11:15)   thickness weights, layers 1-5
-fun = @(p) layer_residual(p, x, f0, eps0, mu0, Ltot, domainLength, 'o');
+fun = @(p) layer_residual(p, x, f0, eps0, mu0, Ltot, domainLength, 'c');
 
 best.dB = inf;
 rng(1);
@@ -115,18 +115,18 @@ material_boundaries_opt = [edges(1:end-1).', edges(2:end).'];   % 5x2 [start, en
 
 plot_regions(domainLength, material_boundaries_opt, ...
              eps_best, ones(1,5), sig_best, zeros(1,5), ...
-             'o', 'o');
+             'o', 'c');
 [eps_r, sigma_e] = build_profile(x, edges, eps_best, sig_best);
 mu_r = ones(size(x));  sigma_m = zeros(size(x));
 %% Rerun frequency sweep
 frequencies = 300e6:2e6:600e6;
 [Gam, T] = sweep_frequencies(frequencies, x, eps_r, mu_r, sigma_e, sigma_m, ...
-                             eps0, mu0, 'o', 'o');
+                             eps0, mu0, 'o', 'c');
 plot_results(frequencies, Gam, T);
 
 %% Plot phase and magnitude of E_tot for this structure
 [E_total, E_scattered] = calculate_fields(f0, x, eps_r, mu_r, sigma_e, sigma_m, ...
-                                       eps0, mu0, 'o', 'o');
+                                       eps0, mu0, 'o', 'c');
 figure;
 plot(x, abs(E_scattered), 'LineWidth', 1.5);
 xlabel('Position (m)'); ylabel('|E_{tot}|');

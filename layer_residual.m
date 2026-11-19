@@ -11,6 +11,6 @@ function res = layer_residual(p, x, f, eps0, mu0, Ltot, domainLength, bc)
     mu_r    = ones(size(x));
     sigma_m = zeros(size(x));
 
-    G = FDFD(f, x, eps_r, mu_r, sigma_e, sigma_m, eps0, mu0, bc, bc);
+    G = FDFD(f, x, eps_r, mu_r, sigma_e, sigma_m, eps0, mu0, 'o', bc);
     res = 1e4 * [real(G); imag(G)];                  % scaled so target ~ 0.3
 end
